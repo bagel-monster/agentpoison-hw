@@ -1,4 +1,4 @@
-name: agentpoison
+name: agentpoison-hw
 channels:
   - pytorch
   - defaults
