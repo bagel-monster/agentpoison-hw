@@ -1,0 +1,19 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+.DS_Store
+
+# key
+api_keys.py
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+sample_data.ipynb
+
+# result
+results/
+wandb/
+
+# embedding
+embeddings_ance-dpr-question-multi.pkl
