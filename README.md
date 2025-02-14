@@ -34,7 +34,7 @@ conda activate agentpoison-hw
 ### Trigger Optimization 步驟
 
 #### 1. API 設定
-   在 `agentdriver/llm_core/api_keys.py` 中設置：
+   新增檔案 `agentdriver/llm_core/api_keys.py` 並在其中添加以下資訊：
    ```python
    OPENAI_API_KEY = "xxxx"
    OPENAI_BASE_URL = "https://gpt01.cycraft.one:8443/chat/completions"
