@@ -291,8 +291,15 @@ def load_db_ad(database_samples_dir="agentdriver/data/finetune/data_samples_trai
                     attention_mask = tokenized_input["attention_mask"].to(device)
                     query_embedding = model(input_ids, attention_mask)
                     embeddings.append(query_embedding)
-            with open(f"{db_dir}/embeddings_{model_code}.pkl", "wb") as f:
-                pickle.dump(embeddings, f)
+            try:
+                with open(f"{db_dir}/embeddings_{model_code}.pkl", "wb") as f:
+                    pickle.dump(embeddings, f)
+            except IOError as e:
+                print(f"Error saving embeddings to file: {e}")
+                # Optionally create directory if it doesn't exist
+                os.makedirs(db_dir, exist_ok=True)
+                with open(f"{db_dir}/embeddings_{model_code}.pkl", "wb") as f:
+                    pickle.dump(embeddings, f)
 
         embeddings = torch.stack(embeddings, dim=0).to(device)
         db_embeddings = embeddings.squeeze(1)
@@ -317,8 +324,15 @@ def load_db_ad(database_samples_dir="agentdriver/data/finetune/data_samples_trai
                     attention_mask = tokenized_input["attention_mask"].to(device)
                     query_embedding = model(input_ids, attention_mask)
                     embeddings.append(query_embedding)
-            with open(f"{db_dir}/embeddings_{model_code}.pkl", "wb") as f:
-                pickle.dump(embeddings, f)
+            try:
+                with open(f"{db_dir}/embeddings_{model_code}.pkl", "wb") as f:
+                    pickle.dump(embeddings, f)
+            except IOError as e:
+                print(f"Error saving embeddings to file: {e}")
+                # Optionally create directory if it doesn't exist
+                os.makedirs(db_dir, exist_ok=True)
+                with open(f"{db_dir}/embeddings_{model_code}.pkl", "wb") as f:
+                    pickle.dump(embeddings, f)
         
         embeddings = torch.stack(embeddings, dim=0).to(device)
         db_embeddings = embeddings.squeeze(1)
@@ -343,8 +357,15 @@ def load_db_ad(database_samples_dir="agentdriver/data/finetune/data_samples_trai
                     attention_mask = tokenized_input["attention_mask"].to(device)
                     query_embedding = model(input_ids, attention_mask).pooler_output
                     embeddings.append(query_embedding)
-            with open(f"{db_dir}/bert_embeddings.pkl", "wb") as f:
-                pickle.dump(embeddings, f)
+            try:
+                with open(f"{db_dir}/bert_embeddings.pkl", "wb") as f:
+                    pickle.dump(embeddings, f)
+            except IOError as e:
+                print(f"Error saving embeddings to file: {e}")
+                # Optionally create directory if it doesn't exist
+                os.makedirs(db_dir, exist_ok=True)
+                with open(f"{db_dir}/bert_embeddings.pkl", "wb") as f:
+                    pickle.dump(embeddings, f)
         
         embeddings = torch.stack(embeddings, dim=0).to(device)
         db_embeddings = embeddings.squeeze(1)
@@ -370,8 +391,15 @@ def load_db_ad(database_samples_dir="agentdriver/data/finetune/data_samples_trai
                     query_embedding = model(input_ids, attention_mask).pooler_output
                     query_embedding = query_embedding.detach().cpu().numpy().tolist()
                     embeddings.append(query_embedding)
-            with open(f"{db_dir}/embeddings_{model_code}.pkl", "wb") as f:
-                pickle.dump(embeddings, f)
+            try:
+                with open(f"{db_dir}/embeddings_{model_code}.pkl", "wb") as f:
+                    pickle.dump(embeddings, f)
+            except IOError as e:
+                print(f"Error saving embeddings to file: {e}")
+                # Optionally create directory if it doesn't exist
+                os.makedirs(db_dir, exist_ok=True)
+                with open(f"{db_dir}/embeddings_{model_code}.pkl", "wb") as f:
+                    pickle.dump(embeddings, f)
     
         embeddings = torch.tensor(embeddings, dtype=torch.float32).to(device)
         db_embeddings = embeddings.squeeze(1)
@@ -396,8 +424,15 @@ def load_db_ad(database_samples_dir="agentdriver/data/finetune/data_samples_trai
                     attention_mask = tokenized_input["attention_mask"].to(device)
                     query_embedding = model(input_ids, attention_mask).pooler_output
                     embeddings.append(query_embedding)
-            with open(f"{db_dir}/embeddings_{model_code}.pkl", "wb") as f:
-                pickle.dump(embeddings, f)
+            try:
+                with open(f"{db_dir}/embeddings_{model_code}.pkl", "wb") as f:
+                    pickle.dump(embeddings, f)
+            except IOError as e:
+                print(f"Error saving embeddings to file: {e}")
+                # Optionally create directory if it doesn't exist
+                os.makedirs(db_dir, exist_ok=True)
+                with open(f"{db_dir}/embeddings_{model_code}.pkl", "wb") as f:
+                    pickle.dump(embeddings, f)
         
         embeddings = torch.stack(embeddings, dim=0).to(device)
         db_embeddings = embeddings.squeeze(1)
@@ -424,8 +459,15 @@ def load_db_ad(database_samples_dir="agentdriver/data/finetune/data_samples_trai
                     # print("query_embedding", query_embedding)
                     # input()
                     embeddings.append(query_embedding)
-            with open(f"{db_dir}/embeddings_{model_code}.pkl", "wb") as f:
-                pickle.dump(embeddings, f)
+            try:
+                with open(f"{db_dir}/embeddings_{model_code}.pkl", "wb") as f:
+                    pickle.dump(embeddings, f)
+            except IOError as e:
+                print(f"Error saving embeddings to file: {e}")
+                # Optionally create directory if it doesn't exist
+                os.makedirs(db_dir, exist_ok=True)
+                with open(f"{db_dir}/embeddings_{model_code}.pkl", "wb") as f:
+                    pickle.dump(embeddings, f)
         
         embeddings = torch.stack(embeddings, dim=0).to(device)
         db_embeddings = embeddings.squeeze(1)
@@ -452,8 +494,15 @@ def load_db_ad(database_samples_dir="agentdriver/data/finetune/data_samples_trai
                     # print("query_embedding", query_embedding)
                     # input()
                     embeddings.append(query_embedding)
-            with open(f"{db_dir}/embeddings_{model_code}.pkl", "wb") as f:
-                pickle.dump(embeddings, f)
+            try:
+                with open(f"{db_dir}/embeddings_{model_code}.pkl", "wb") as f:
+                    pickle.dump(embeddings, f)
+            except IOError as e:
+                print(f"Error saving embeddings to file: {e}")
+                # Optionally create directory if it doesn't exist
+                os.makedirs(db_dir, exist_ok=True)
+                with open(f"{db_dir}/embeddings_{model_code}.pkl", "wb") as f:
+                    pickle.dump(embeddings, f)
         
         embeddings = torch.stack(embeddings, dim=0).to(device)
         db_embeddings = embeddings.squeeze(1)
