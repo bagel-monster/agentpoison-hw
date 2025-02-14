@@ -21,7 +21,7 @@
 git clone git@github.com:bagel-monster/agentpoison-hw.git
 cd agentpoison-hw
 conda env create -f environment.yml
-conda activate agentpoison
+conda activate agentpoison-hw
 ```
 
 ### 資料集介紹  
