@@ -18,8 +18,8 @@
 
 #### 2. Clone 專案並設置環境
 ```bash
-git clone [your-repo-url]
-cd [your-repo-name]
+git clone git@github.com:bagel-monster/agentpoison-hw.git
+cd agentpoison-hw
 conda env create -f environment.yml
 conda activate agentpoison
 ```
