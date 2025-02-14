@@ -132,6 +132,76 @@ def target_word_prob(data, model, tokenizer, num_adv_passage_tokens, adv_passage
         print("output", output)
         input()
 
+
+
+def bert_get_adv_emb(data, model, tokenizer, num_adv_passage_tokens, adv_passage_ids, adv_passage_attention, device='cuda'):
+    query_embeddings = []
+    if "ego" in data.keys():
+        for ego, perception in zip(data["ego"], data["perception"]):
+            query = f"{ego} {perception} NOTICE:"
+
+            # tokenized_input = tokenizer(query, padding='max_length', truncation=True, max_length=512, return_tensors="pt")
+            tokenized_input = tokenizer(query, truncation=True, max_length=512-num_adv_passage_tokens, return_tensors="pt")
+            with torch.no_grad():
+                input_ids = tokenized_input["input_ids"].to(device)
+
+                attention_mask = tokenized_input["attention_mask"].to(device)
+
+                # padding_token_ids = torch.tensor([tokenizer.pad_token_id] * (512-args.num_adv_passage_tokens- input_ids.shape[1]), device=device, dtype=torch.long).unsqueeze(0)
+                # padding_attention_mask = torch.zeros_like(padding_token_ids, device=device)
+                # print('input_ids', input_ids.shape)
+                # print('attention_mask', attention_mask.shape)
+                # print("adv_passage_ids", adv_passage_ids.shape)
+                # print("adv_passage_attention", adv_passage_attention.shape)
+                # suffix_adv_passage_ids = torch.cat((input_ids, adv_passage_ids, padding_token_ids), dim=1)
+                # suffix_adv_passage_attention = torch.cat((attention_mask, adv_passage_attention, padding_attention_mask), dim=1)
+                
+                suffix_adv_passage_ids = torch.cat((input_ids, adv_passage_ids), dim=1)
+                suffix_adv_passage_attention = torch.cat((attention_mask, adv_passage_attention), dim=1)
+                # print("Input IDs length:", suffix_adv_passage_ids.shape[1])
+                # print("Attention Mask length:", suffix_adv_passage_attention.shape[1])
+                # input()
+                # print('Init adv_passage', tokenizer.convert_ids_to_tokens(suffix_adv_passage_ids[0]))
+                p_sent = {'input_ids': suffix_adv_passage_ids, 'attention_mask': suffix_adv_passage_attention}
+            
+            if isinstance(model, ClassificationNetwork) or isinstance(model, TripletNetwork):
+                p_emb = bert_get_emb(model, p_sent)
+            # elif isinstance(model, RealmEmbedder):
+            #     p_emb = model(**p_sent).projected_score
+            elif isinstance(model, RealmForOpenQA):
+                p_emb = model(**p_sent).pooler_output
+            else:
+                p_emb = model(**p_sent).pooler_output
+                # print('p_emb', p_emb.shape)
+            query_embeddings.append(p_emb)
+
+    elif "question" in data.keys():
+
+        for question in data["question"]:
+            tokenized_input = tokenizer(question, padding='max_length', truncation=True, max_length=512-num_adv_passage_tokens, return_tensors="pt")
+            with torch.no_grad():
+                input_ids = tokenized_input["input_ids"].to(device)
+                attention_mask = tokenized_input["attention_mask"].to(device)
+                suffix_adv_passage_ids = torch.cat((input_ids, adv_passage_ids), dim=1)
+                suffix_adv_passage_attention = torch.cat((attention_mask, adv_passage_attention), dim=1)
+                p_sent = {'input_ids': suffix_adv_passage_ids, 'attention_mask': suffix_adv_passage_attention}
+            
+            if isinstance(model, ClassificationNetwork) or isinstance(model, TripletNetwork):
+                p_emb = bert_get_emb(model, p_sent)
+            elif isinstance(model, RealmForOpenQA):
+                p_emb = model(**p_sent).pooler_output
+            else:
+                p_emb = model(**p_sent).pooler_output
+            query_embeddings.append(p_emb)
+
+    query_embeddings = torch.cat(query_embeddings, dim=0)
+
+    return query_embeddings
+
+
+def bert_get_emb(model, input):
+    return model.bert(**input).pooler_output
+
 def ance_get_emb(model, input):
     input.pop('token_type_ids', None)
     return model(input)["sentence_embedding"]
